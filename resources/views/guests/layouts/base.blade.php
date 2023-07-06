@@ -8,13 +8,14 @@
     @vite('resources/js/app.js')
 </head>
 <body>
-    @include('admin.includes.header')
+    @include("guests.includes.header")
+
     <div class="container">
         <main>
-            @yield("contents")
+            @yield('contents')
         </main>
     </div>
 
-    @include('admin.includes.footer')
+    @include("guests.includes.footer")
 </body>
 </html>
