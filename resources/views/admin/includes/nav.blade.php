@@ -1,3 +1,4 @@
+@php $user = Auth::user(); @endphp
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ route("guests.home") }}">Boolpress</a>
@@ -16,6 +17,23 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ route("admin.posts.index") }}">Index</a></li>
               <li><a class="dropdown-item" href="{{ route("admin.posts.create") }}">Add</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ $user->name }}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ route("admin.posts.edit", $user->name) }}">Edit profile</a></li>
+              <li>
+                <form action="{{route("logout") }}" method="post">
+                  @csrf
+                  <button>Logout</button>
+                </form>
+              </li>
             </ul>
           </li>
         </ul>
