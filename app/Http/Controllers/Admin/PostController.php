@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -27,7 +28,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create");
+
+        $categories= Category::all();
+        return view("admin.posts.create", compact("categories"));
     }
 
     /**
@@ -40,22 +43,25 @@ class PostController extends Controller
     {
 
         $request->validate([
-            "title"         => "required|string|min:5|max:100",
-            "url_image"     => "required|url|max:200",
-            "repo"          => "required|string|max:100",
+            "title"                 => "required|string|min:5|max:100",
+            "category_id"           => "required|integer|exists:categories,id",
+            "url_image"             => "required|url|max:200",
+            "repo"                  => "required|string|max:100",
         ], [
             "required"              => ":attribute is required",
             "min"                   => ":attribute must have almost :min character",
             "max"                   => ":attribute cannot exceed :max characters",
             "url"                   => ":attribute must be a valid url",
+            "exists"                => "The Value is not valid",
         ]);
 
         $data = $request->all();
 
         $newPost = new Post();
-        $newPost->title        = $data["title"];
-        $newPost->url_image    = $data["url_image"];
-        $newPost->repo         = $data["repo"];
+        $newPost->title              = $data["title"];
+        $newPost->category_id        = $data["category_id"];
+        $newPost->url_image          = $data["url_image"];
+        $newPost->repo               = $data["repo"];
         $newPost->save();
 
         return to_route("admin.posts.show", ["post" => $newPost]);
@@ -80,7 +86,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view("admin.posts.edit", compact("post"));
+        $categories= Category::all();
+        return view("admin.posts.edit", compact("post", "categories"));
     }
 
     /**
@@ -92,11 +99,13 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // $request->validate() TODO
         $data = $request->all();
 
-        $post->title        = $data["title"];
-        $post->url_image    = $data["url_image"];
-        $post->repo         = $data["repo"];
+        $post->title              = $data["title"];
+        $post->category_id        = $data["category_id"];
+        $post->url_image          = $data["url_image"];
+        $post->repo               = $data["repo"];
         $post->update();
 
         return to_route("admin.posts.show", ["post" => $post]);

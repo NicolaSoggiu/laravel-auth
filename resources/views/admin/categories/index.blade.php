@@ -2,36 +2,34 @@
 
 @section('contents')
 
-<h1>Posts : </h1>
+<h1>Categories : </h1>
 
-@if (session('delete_success'))
+{{-- @if (session('delete_success'))
         @php $post = session('delete_success') @endphp
         <div class="alert alert-danger">
             The post "{{ $post->title }}" was deleted
         </div>
-    @endif
+    @endif --}}
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Titolo</th>
-            <th scope="col">Category</th>
-            <th scope="col">Image</th>
+            <th scope="col">Name</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($posts as $post)
+        @foreach ($categories as $category)
             <tr>
-                <th scope="row">{{ $post->id }}</th>
-                <td>{{ $post->title }}</td>
-                <td><a href="{{ route("admin.categories.show", ["category" => $post->category]) }}">{{ $post->category->name }}</a></td>
-                <td>{{ $post->url_image }}</td>
+                <th scope="row">{{ $category->id }}</th>
+                <td>{{ $category->id }}</td>
+                <td>{{ $category->name }}</td>
+                <td>{{ $category->url_image }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ route('admin.posts.show', ['post' => $post]) }}">View</a>
-                    <a class="btn btn-warning" href="{{ route('admin.posts.edit', ['post' => $post]) }}">Edit</a>
-                    <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $post->id }}">
+                    <a class="btn btn-primary" href="{{ route('admin.categories.show', ['category' => $category]) }}">View</a>
+                    <a class="btn btn-warning" href="{{ route('admin.categories.edit', ['category' => $category]) }}">Edit</a>
+                    <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $category->id }}">
                         Delete
                       </button>
             </td>
@@ -52,7 +50,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                             <form
                         action=""
-                        data-template="{{ route('admin.posts.destroy', ['post' => '*****']) }}"
+                        data-template="{{ route('admin.categories.destroy', ['category' => '*****']) }}"
                         method="post"
                         class="d-inline-block"
                         id="confirm-delete"
@@ -68,9 +66,9 @@
     </tbody>
 </table>
 
-<a class="btn btn-primary" href="{{ route("admin.posts.create") }}">Create new post</a>
+<a class="btn btn-primary" href="{{ route("admin.categories.create") }}">Create new post</a>
 
 
-{{ $posts->links() }}
+{{-- {{ $posts->links() }} --}}
 
 @endsection
